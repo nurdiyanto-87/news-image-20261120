@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
-"""Entry program: copy the bundled front-page image to the output dir.
+"""Copy the bundled front page to the output directory.
 
-Pure stdlib, deterministic, no network. The image (entry.png) is drawn
-by draw.py in this repository; this program only places a copy of it at
-$MAKEFUN_OUTPUT_DIR/entry.png (default /output).
+Runs on the standard library alone. The PNG itself is produced by
+draw.py in this repository; this entry point just places a copy of it
+at $MAKEFUN_OUTPUT_DIR/entry.png (default /output).
 """
 import os
 import shutil
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+ROOT = Path(__file__).parent
+SOURCE = ROOT / "entry.png"
 
 
-def main():
-    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
-    out_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(HERE / "entry.png", out_dir / "entry.png")
+def run():
+    target = Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output")
+    target.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(SOURCE, target / "entry.png")
 
 
 if __name__ == "__main__":
-    main()
+    run()
